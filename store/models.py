@@ -20,7 +20,6 @@ class Collection(models.Model):
 
 
 class Product(models.Model):
-    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     description = models.TextField(null=True, blank=True)
