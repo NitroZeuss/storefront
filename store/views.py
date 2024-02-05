@@ -22,7 +22,6 @@ class ProductViewSet(ModelViewSet):
     
 
 # Collection list View logic
-    
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class =CollectionSerializer
@@ -32,12 +31,10 @@ class CollectionViewSet(ModelViewSet):
         collection_instance.delete()
         return Response('Deleted!')
 
-
-
 class ReviewViewset(ModelViewSet):
     queryset = reviews.objects.all()
     serializer_class = ReviewSerializer
-    
+
 
 
 
