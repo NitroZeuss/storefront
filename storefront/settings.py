@@ -161,3 +161,7 @@ CORS_ALLOWED_ORIGINS = [
     # Other allowed origins...
 ]
 
+# In your Django settings.py
+CORS_ALLOW_ALL_ORIGINS = True  # For development
+
+

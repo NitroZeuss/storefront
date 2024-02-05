@@ -1,12 +1,12 @@
-
 from django.conf import settings
 from django.conf.urls.static import static
-
-from django.urls import path
+from rest_framework.routers import SimpleRouter
+from django.urls import path, include
 from . import views
 
-# URLConf
-urlpatterns = [
-    path('products/', views.product_list),
-    path('products/<int:id>/', views.product_detail),
-]
+router = SimpleRouter()
+router.register('products', views.ProductViewSet)
+router.register('collections', views.CollectionViewSet)
+router.urls
+
+urlpatterns = router.urls

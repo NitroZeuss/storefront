@@ -51,6 +51,7 @@ class Customer(models.Model):
     ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    password = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=255)
     birth_date = models.DateField(null=True, blank=True)
@@ -102,3 +103,9 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+
+class reviews(models.Model):
+    product = models.ForeignKey('Product', on_delete = models.CASCADE)
+    name  = models.CharField(max_length=255)
+    discription = models.TextField()
+    date = models.DateField(auto_now_add=True)

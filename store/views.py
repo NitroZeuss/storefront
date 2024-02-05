@@ -1,25 +1,48 @@
-from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
-from .models import Collection, Product
-from .serializers import CollectionSerializer, ProductSerializer
+from rest_framework.viewsets import ModelViewSet
+from .models import Product, Customer, Collection, reviews
+from .serializers import ProductSerializer, CustomerSerializer, CollectionSerializer, ReviewSerializer
+
+# Product list View logic
+class ProductViewSet(ModelViewSet):
+    queryset =Product.objects.all()
+    serializer_class =ProductSerializer
+
+    def get_serializer_context(self):
+         return {'request': self.request}
+
+    def delete(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+# Collection list View logic
+    
+class CollectionViewSet(ModelViewSet):
+    queryset = Collection.objects.all()
+    serializer_class =CollectionSerializer
+
+    def delete(self, request, pk):
+        collection_instance = self.get_object()  # Get the specific instance
+        collection_instance.delete()
+        return Response('Deleted!')
 
 
-@api_view(['GET'])
-def product_list(request):
-        queryset = Product.objects.select_related('collection').all()
-        serializer = ProductSerializer(
-            queryset, many=True, context={'request': request})
-        return Response(serializer.data)
+
+class ReviewViewset(ModelViewSet):
+    queryset = reviews.objects.all()
+    serializer_class = ReviewSerializer
+    
 
 
-@api_view(['GET'])
-def product_detail(request, id):
-    product = get_object_or_404(Product, pk=id)
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+
+
+
+
 
 

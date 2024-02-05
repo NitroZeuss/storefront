@@ -1,29 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Feast 2077</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+  <title>Customer Sign In</title>
 </head>
-
 <body>
-    <div class="navbar">
-        <a href="#">Home</a>
-        <a href="#">Menu</a>
-        <a href="#">About Us</a>
-    </div>
+  <form id="signupForm">
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required>
 
-    <div class="header">
-        <h1>Tomato</h1>
-        <p>Explore cutting-edge culinary delights in the year 2077.</p>
-    </div>
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required>
 
-    <div class="item-container" id="item-container"></div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
 
-    <script src="script.js"></script>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" required>
+
+    <button type="button" onclick="submitForm()">Sign In</button>
+
+    <div id="errorContainer" class="error-message"></div>
+  </form>
+
+  <script>
+    function submitForm() {
+      const firstName = document.getElementById('first_name').value;
+      const lastName = document.getElementById('last_name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+
+      const userData = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone
+      };
+
+      const apiUrl = 'http://127.0.0.1:8000/store/customers/';
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        // Handle success (e.g., redirect user, show a success message)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        if (error instanceof SyntaxError) {
+          // Handle the case where the response is not valid JSON
+          displayErrors({ general: ['Invalid response from the server.'] });
+        } else {
+          // Handle other types of errors
+          displayErrors({ general: ['An error occurred while processing your request.'] });
+        }
+      });
+    }
+
+    function displayErrors(error) {
+      const errorContainer = document.getElementById('errorContainer');
+      errorContainer.innerHTML = '';
+
+      for (const field in error) {
+        if (error.hasOwnProperty(field)) {
+          const errors = error[field];
+          errors.forEach(errorMessage => {
+            const errorElement = document.createElement('div');
+            errorElement.textContent = `${field}: ${errorMessage}`;
+            errorContainer.appendChild(errorElement);
+          });
+        }
+      }
+    }
+  </script>
 </body>
-
 </html>
-
