@@ -164,4 +164,9 @@ CORS_ALLOWED_ORIGINS = [
 # In your Django settings.py
 CORS_ALLOW_ALL_ORIGINS = True  # For development
 
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10,
+    
+}
+
 
